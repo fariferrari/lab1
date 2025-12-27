@@ -1,21 +1,24 @@
-RPC Implementation & Deployment on AWS EC2
-This repository contains a custom Remote Procedure Call (RPC) system built for a Distributed Computing lab. The system is deployed on AWS EC2 using two separate nodes: a Client and a Server.
+# RPC Implementation and Deployment on AWS EC2
 
-Project Overview:
-The goal of this project is to simulate a distributed environment where a client requests a computation (addition) from a remote server. The communication is handled over TCP using JSON as the marshalling format.
+This project is a part of the Distributed Computing Lab. It demonstrates a custom **Remote Procedure Call (RPC)** system implemented in Python, deployed on two separate **AWS EC2** instances.
 
-Features:
-Custom RPC Protocol: Uses JSON for request and response formatting.
+## Project Overview
+The system allows a Client node to perform a mathematical operation (`add`) on a Server node remotely. The communication is handled over a TCP network using JSON for data serialization.
 
-Marshalling/Unmarshalling: Handles data conversion for network transmission.
+##  Features Implemented
+- **Marshalling/Unmarshalling**: Data is converted into JSON format for network transmission.
+- **Unique Request IDs**: Each request is assigned a unique UUID to track transactions and ensure consistency.
+- **Timeout Handling**: The client has a built-in 2-second timeout to prevent hanging.
+- **Retry Logic**: If the server is unavailable, the client automatically retries the request up to 3 times.
+- **At-Least-Once Semantics**: The system ensures that the request is delivered and processed through its retry mechanism.
 
-Unique Request IDs: Every client request is assigned a unique UUID to track the transaction.
+##  Repository Structure
+- `server.py`: The Server stub that listens for connections and executes the remote function.
+- `client.py`: The Client stub that initiates requests, handles timeouts, and retries.
+- `README.md`: Project documentation and instructions.
 
-Retry Logic: The client includes a 2-second timeout and automatically retries the request up to 3 times if a failure occurs.
-
-At-Least-Once Semantics: Ensures the request is delivered and processed even in the event of temporary network issues.
-
-Repository Structure:
-server.py: The Server Stub that listens for connections and executes the add(a, b) function.
-
-client.py: The Client Stub that marshals data, handles timeouts, and performs retries.
+##  Deployment Details
+- **Infrastructure**: 2x AWS EC2 instances (t2.micro / Ubuntu 22.04).
+- **Security Group Rules**: 
+  - Port 22 (SSH) opened for both nodes.
+  - Port 5000 (TCP) opened on the Server node for RPC traffic.
